@@ -32,10 +32,7 @@ pub fn Ws2812(comptime pin_name: []const u8, comptime led_count: u16) type {
         leds: [led_buffer_size]u8,
 
         pub fn init(self: *Self) void {
-            var i: usize = 0;
-            while (i < self.leds.len) : (i += 1) {
-                self.leds[i] = 0;
-            }
+            self.clear();
 
             hal.gpio.set_output(LedPin);
             hal.gpio.write(LedPin, .low);
@@ -57,7 +54,10 @@ pub fn Ws2812(comptime pin_name: []const u8, comptime led_count: u16) type {
         }
 
         pub fn clear(self: *Self) void {
-            self.fill(.{ .r = 0, .g = 0, .b = 0 });
+            var i: usize = 0;
+            while (i < self.leds.len) : (i += 1) {
+                self.leds[i] = 0;
+            }
         }
 
         pub fn show(self: *Self) void {

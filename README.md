@@ -81,7 +81,7 @@ Artifacts:
        -Davrdude-bin=avrdude \
        -Dflash-mcu=m328p
      ```
-   If you lack permissions on the serial device, prefix direct avrdude with `sudo` or fix permissions per Prerequisites.
+     If you lack permissions on the serial device, prefix direct avrdude with `sudo` or fix permissions per Prerequisites.
 
 ## Project Layout
 
@@ -101,15 +101,18 @@ Artifacts:
 
 ## Troubleshooting
 
-- Permission denied on `/dev/ttyUSB0`:
+- **Permission denied on `/dev/ttyUSB0`**:
   - Add user to `uucp` group or use `sudo`/ACL as shown above.
-- avrdude sync errors:
+- **`avrdude` sync errors**:
   - Toggle baud between 115200 and 57600.
-  - Press/reset the board at the start of the upload.
+  - Press the reset button on the board just as the upload begins.
   - Ensure you’re using `-c arduino -p m328p` for ATmega328P bootloaders.
-- Build errors on AVR regarding `compiler_rt` or odd integer sizes:
+- **Build errors regarding `compiler_rt` or odd integer sizes**:
   - Use `-Doptimize=ReleaseSmall` and avoid pulling in heavy helpers.
   - This project disables bundling `compiler_rt` for the AVR firmware via build.zig.
+- **Firmware hangs after refactoring `comptime` logic**:
+  - **Problem**: When refactoring repetitive logic from `main` into a helper function (e.g., a function that draws a character and then calls a `comptime` delay), the program may hang after the first iteration on real hardware. This can happen with AVR targets under `ReleaseSmall` optimization, as the compiler's behavior with nested `comptime` arguments can be unpredictable.
+  - **Solution**: A more robust pattern is to perform the logic directly inside an `inline for` loop within your main loop. This allows you to eliminate code duplication in the source while ensuring the compiler unrolls the operations in a simple, predictable way, avoiding complex function call chains that might confuse the optimizer.
 
 ## Next Steps
 
