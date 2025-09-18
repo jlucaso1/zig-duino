@@ -49,6 +49,17 @@ pub fn Ws2812(comptime pin_name: []const u8, comptime led_count: u16) type {
             self.leds[i + 2] = color.b;
         }
 
+        pub fn fill(self: *Self, color: Color) void {
+            var idx: u16 = 0;
+            while (idx < led_count) : (idx += 1) {
+                self.setPixelColor(idx, color);
+            }
+        }
+
+        pub fn clear(self: *Self) void {
+            self.fill(.{ .r = 0, .g = 0, .b = 0 });
+        }
+
         pub fn show(self: *Self) void {
             const ptr_addr = @intFromPtr(&self.leds);
 

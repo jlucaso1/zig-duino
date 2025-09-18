@@ -18,48 +18,35 @@ fn delay(comptime count: u32) void {
     }
 }
 
+// Helper to wipe a color across the shield with a pixel delay.
+fn wipe(shield_ptr: *Shield, color: ws2812.Color, comptime pixel_delay: u32) void {
+    var idx: u16 = 0;
+    while (idx < LED_COUNT) : (idx += 1) {
+        shield_ptr.setPixelColor(idx, color);
+        shield_ptr.show();
+        delay(pixel_delay);
+    }
+}
+
 pub fn main() void {
     var shield: Shield = undefined;
     shield.init();
 
-    const red = ws2812.Color{ .r = 50, .g = 0, .b = 0 };
-    const green = ws2812.Color{ .r = 0, .g = 50, .b = 0 };
-    const blue = ws2812.Color{ .r = 0, .g = 0, .b = 50 };
-    const off = ws2812.Color{ .r = 0, .g = 0, .b = 0 };
+    const RED: ws2812.Color = .{ .r = 50, .g = 0, .b = 0 };
+    const GREEN: ws2812.Color = .{ .r = 0, .g = 50, .b = 0 };
+    const BLUE: ws2812.Color = .{ .r = 0, .g = 0, .b = 50 };
 
     while (true) {
-        // --- Red Wipe ---
-        var i: u16 = 0;
-        while (i < LED_COUNT) : (i += 1) {
-            shield.setPixelColor(i, red);
-            shield.show();
-            delay(40000); // Calibrated for visual delay
-        }
+        wipe(&shield, RED, 40000);
         delay(800000);
 
-        // --- Green Wipe ---
-        i = 0;
-        while (i < LED_COUNT) : (i += 1) {
-            shield.setPixelColor(i, green);
-            shield.show();
-            delay(40000);
-        }
+        wipe(&shield, GREEN, 40000);
         delay(800000);
 
-        // --- Blue Wipe ---
-        i = 0;
-        while (i < LED_COUNT) : (i += 1) {
-            shield.setPixelColor(i, blue);
-            shield.show();
-            delay(40000);
-        }
+        wipe(&shield, BLUE, 40000);
         delay(800000);
 
-        // --- Turn Off ---
-        i = 0;
-        while (i < LED_COUNT) : (i += 1) {
-            shield.setPixelColor(i, off);
-        }
+        shield.clear();
         shield.show();
         delay(800000);
     }
