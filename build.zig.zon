@@ -1,0 +1,18 @@
+.{
+    .name = .zig_duino,
+    .version = "0.0.0",
+    .fingerprint = 0xaecf6550890ad94c,
+    .minimum_zig_version = "0.15.1",
+    .dependencies = .{
+        .microzig = .{
+            .url = "https://github.com/ZigEmbeddedGroup/microzig/releases/download/0.15.0/microzig.tar.gz",
+            .hash = "1220e939a46d43848e9341c9fc4e37e36ae04bd9b72d01a12136dd053808b5d00bfe",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        //"README.md",
+    },
+}
