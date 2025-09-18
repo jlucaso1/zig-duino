@@ -110,7 +110,7 @@ Artifacts:
 - **Build errors regarding `compiler_rt` or odd integer sizes**:
   - Use `-Doptimize=ReleaseSmall` and avoid pulling in heavy helpers.
   - This project disables bundling `compiler_rt` for the AVR firmware via build.zig.
-- **Firmware hangs after refactoring `comptime` logic**:
+- **Firmware hangs after refactoring `comptime` logic or only show white colors**:
   - **Problem**: When refactoring repetitive logic from `main` into a helper function (e.g., a function that draws a character and then calls a `comptime` delay), the program may hang after the first iteration on real hardware. This can happen with AVR targets under `ReleaseSmall` optimization, as the compiler's behavior with nested `comptime` arguments can be unpredictable.
   - **Solution**: A more robust pattern is to perform the logic directly inside an `inline for` loop within your main loop. This allows you to eliminate code duplication in the source while ensuring the compiler unrolls the operations in a simple, predictable way, avoiding complex function call chains that might confuse the optimizer.
 
