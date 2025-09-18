@@ -5,8 +5,8 @@
     .minimum_zig_version = "0.15.1",
     .dependencies = .{
         .microzig = .{
-            .url = "https://github.com/ZigEmbeddedGroup/microzig/releases/download/0.15.0/microzig.tar.gz",
-            .hash = "1220e939a46d43848e9341c9fc4e37e36ae04bd9b72d01a12136dd053808b5d00bfe",
+            .url = "https://github.com/ZigEmbeddedGroup/microzig/archive/refs/heads/main.tar.gz",
+            .hash = "1220876938a0fdd7d0b33298e883e0e2772d318c25bea53077cfa6c80bb875276250",
         },
     },
     .paths = .{
